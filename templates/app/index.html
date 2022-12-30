@@ -1,0 +1,84 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Mr Rahman" />
+    <link rel="shortcut icon" href="{% static 'app/favicon.png' %}">
+    <title>YouTube Video Downloader</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Font-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'app/style.css' %}" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .formSmall {
+            width: 400px;
+            margin: 20px auto 20px auto;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <form method="POST" action="" class="formSmall">
+            {% csrf_token %}
+            <center><img src="{% static 'app/image.png' %}" width="320" alt="yt_image"></a></center>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h7 class="text-align"> Download YouTube Video</h7>
+                </div>
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <!-- for fethcing the video -->
+                        <input type="text" class="form-control" name="given_url" value="{{url}}" placeholder="enter url...">
+                        <span class="input-group-btn">
+                            <button type="submit" name="fetch-vid" value="fetch-vid" class="btn btn-primary">Go!</button>
+                        </span>
+                        {% if error %}
+                            <p style="color: red">{{error}}</p>
+                        {% endif %}
+                    </div><!-- /input-group -->
+                </div>
+            </div><!-- .row -->
+
+            <div class="card formSmall">
+                <div class="card-header">
+                    <strong>With Video & Sound</strong>
+                </div>
+                <div class="card-body">
+                    {% if vid_title %}
+                    <br>
+                        <h5>{{vid_title}}</h5>
+                        <img src="{{vid_thumbnail}}" alt="thumbnail" width="330"/>
+                    <br>
+                    {% endif %}
+                    <br>
+    
+                    <table class="table ">
+                        <tr>
+                            <!-- <td>Type</td> -->
+                            <td><strong>Quality</strong></td>
+                            <td><strong>Size</strong></td>
+                            <td><strong>Download</strong></td>
+                        </tr>
+                        {% for x in stream %}
+                            <tr>
+                                <!-- <td>{{ x.file_extension }}</td> -->
+                                <td>{{ x.resolution }}</td>
+                                <td>{{ x.filesize_mb | floatformat:1 }}MB</td>
+                                <td><button type="submit" name="download-vid" id="submit" value="{{forloop.counter0}}" class="btn btn-success">Download</button></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>    
+        </form>
+    </div>
+</body>
+
+    
